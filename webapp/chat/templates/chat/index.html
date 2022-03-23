@@ -7,7 +7,9 @@
 <body>
     What chat room would you like to enter?<br>
     <input id="room-name-input" type="text" size="100"><br>
-    <input id="room-name-submit" type="button" value="Enter">
+    What nick would you like to have?
+    <input id="author-name-input" type="text" size="100" default="anonymous"><br>
+    <input id="room-name-submit" type="button" value="Enter"><br>
 
     <script>
         document.querySelector('#room-name-input').focus();
@@ -20,7 +22,10 @@
         document.querySelector('#room-name-submit').onclick = function(e) {
             var roomName = document.querySelector('#room-name-input').value;
             window.location.pathname = '/chat/' + roomName + '/';
+            let nick = document.querySelector('#author-name-input').value
+            sessionStorage.setItem("author", nick)
         };
+
     </script>
 </body>
 </html>
