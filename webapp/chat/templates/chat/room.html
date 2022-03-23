@@ -10,6 +10,8 @@
     <input id="chat-message-submit" type="button" value="Send">
     {{ room_name|json_script:"room-name" }}
     <script>
+        const WS_PORT = 8765
+       
         let author = sessionStorage.getItem("author")
         if (!author){
             author = "Anonymous"
@@ -18,7 +20,8 @@
         const roomName = JSON.parse(document.getElementById('room-name').textContent);
 
         const chatSocket = new WebSocket(
-            'ws://localhost:8765'
+            //`ws://${window.location.host}:${WS_PORT}/chat/${roomName}`
+            `ws://${window.location.hostname}:${WS_PORT}`
         );
 
         chatSocket.onmessage = function(e) {
