@@ -3,39 +3,23 @@ import binascii
 import datetime
 import os
 from time import sleep
+import conn_managers
 
-from fastapi import FastAPI, HTTPException, WebSocket
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 import pymongo
 from bson import json_util
-from typing import Union
+from typing import Union, List
 import json
 
-sleep(30)
-db_client = pymongo.MongoClient(os.environ["MONGO_URL"])
-print(db_client.list_database_names())
 
-db = db_client["chat_db"]
-channel_id_db = db["channel_id"]
+db_manager = conn_managers.DBManager(os.environ["MONGO_URL"])
+
+# db_client = pymongo.MongoClient(os.environ["MONGO_URL"])
+# db = db_client["chat_db"]
+# channel_id_db = db["channel_id"]
 
 app = FastAPI()
-
-
-async def get_channel(channel_id: str):
-    # validate base64
-    try:
-        base64.b64decode(channel_id)
-    except binascii.Error:
-        raise HTTPException(status_code=500, detail=f"Channel ID not b64 encoded")
-
-    channel_id_no = channel_id_db.find_one({"channel_id": channel_id})
-    if channel_id_no is None:
-        channel_no = channel_id_db.find_one(sort=[("channel_id", pymongo.DESCENDING)])["channel_no"] + 1
-        channel_id_no = {"channel_id": channel_id, "channel_no": channel_no}
-        channel_id_db.insert_one(channel_id_no)
-
-    channel_no = channel_id_db["channel_no"]
-    channel = db[f"room_{channel_no}"]
-    return channel
+channel_manager = conn_managers.ChannelManager(db_manager)
 
 
 @app.get("/")
@@ -44,9 +28,9 @@ async def root():
 
 
 @app.get("/api/{channel_id}")
-async def get_messages(channel_id: str, message_id: Union[int, None], number_of_messages: int):
+async def get_messages(channel_id: str, message_id: int | None, number_of_messages: int = 10):
 
-    channel = await get_channel(channel_id)
+    channel, _ = await db_manager.get_channel(channel_id)
 
     messages = channel\
         .find({"message_id": {"$lte": message_id}})\
@@ -57,28 +41,22 @@ async def get_messages(channel_id: str, message_id: Union[int, None], number_of_
 
 @app.websocket("/ws/{channel_id}")
 async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
-    await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(data)
+    _, channel_no = await db_manager.get_channel(channel_id)
+    channel = channel_manager.get_channel(channel_no)
+    await channel.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            message = {
+                "message_id": await db_manager.get_last_message_no(channel_no) + 1,
+                "author": username,
+                "message": data,
+                "timestamp": f"{datetime.datetime.utcnow()}"
+            }
+            db_manager.db[f"room_{channel_no}"].insert_one(message)
 
+            await channel.broadcast(f"{message}")
 
-@app.post("/send/{room_id}/{message}")
-async def send_message(room_id: str, message: str):
-    room = db[f"room{room_id}"]
-
-    insert_message = {
-        "author": "anonymous",
-        "message": message,
-        "timestamp": datetime.datetime.utcnow()
-    }
-
-    room.insert_one(insert_message)
-    return json_util.dumps(insert_message)
-
-
-@app.get("/getn/{room_id}/{no_msg}")
-async def get_n_messages(room_id: str, no_msg: int):
-    room = db[f"room{room_id}"]
-    msg_cursor = room.find().sort("timestamp", pymongo.DESCENDING).limit(no_msg)
-    return json_util.dumps(msg_cursor)
+    except WebSocketDisconnect:
+        channel.disconnect(websocket)
+        await channel.broadcast(f"Client #{username} left the chat")
