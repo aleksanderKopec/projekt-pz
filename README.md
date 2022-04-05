@@ -13,4 +13,4 @@ Ma to na celu zachęcenie użytkownika do 'eksplorowania' pokoi czatowych, pozna
 
 ### Zabezpieczenie przed automatycznym przeszukiwaniem kanałów
 
-W celu zapobiegnięciu zautomatyzowanemu przeszukiwaniu aktywnych kanałów zostaną wprowadzone mechanizmy wprowadzające opóźnienie w dołączeniu do każdego kolejnego kanału użytkownika.
+W celu zapobiegnięcia zautomatyzowanemu przeszukiwaniu aktywnych kanałów zostaną wprowadzone mechanizmy wprowadzające opóźnienie w dołączeniu do każdego kolejnego kanału użytkownika.
