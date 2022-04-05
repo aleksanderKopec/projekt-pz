@@ -51,7 +51,7 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
                 "message_id": await db_manager.get_last_message_no(channel_no) + 1,
                 "author": username,
                 "message": data,
-                "timestamp": f"{datetime.datetime.utcnow()}"
+                "timestamp": f"{datetime.datetime.utcnow().isoformat()}"
             }
             db_manager.db[f"room_{channel_no}"].insert_one(message)
 
