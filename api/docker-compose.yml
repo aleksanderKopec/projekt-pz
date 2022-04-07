@@ -1,0 +1,15 @@
+services:
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db-data:/data/db
+  api:
+    depends_on:
+      - db
+    build: .
+    ports:
+      - 3100:80
+    environment:
+      - MONGO_URL=mongodb://db:27017/app_development
