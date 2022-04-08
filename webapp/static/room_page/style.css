@@ -1,0 +1,57 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+body{
+    display: flex;
+    background-color: lightgray;
+}
+.main{
+    width: 100%;
+    height: 98%;
+    margin: 0.5rem;
+}
+.chat-log{
+    width: 100%;
+    height: 85%;
+    overflow-y: scroll;
+}
+.message-input{
+    height: 10%;
+    width: 100%;
+    display: flex;
+}
+.message-field{
+    width:90%;
+}
+.message-submit{
+    width: 10%;
+}
+.message {
+    display: flex;
+    flex-flow: column;
+}
+.message-author {
+    width: fit-content;
+    color: black;
+    border-radius: 10px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    max-width: 30rem;
+}
+.message-content{
+    display: block;
+    padding: 0.5rem;
+    background-color: rgb(107, 159, 211);
+    border-radius: 10px;
+    font-size: 130%;
+    max-width: 30rem;
+}
+.my-message {
+    align-items: flex-end;
+}
+.my-message .message-content{
+    background-color: rgb(49, 210, 235);
+}
+
