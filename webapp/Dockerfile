@@ -1,5 +1,5 @@
 FROM python:3
-RUN apt-get update && apt-get install nginx vim gunicorn -y --no-install-recommends
+RUN apt-get update && apt-get install nginx vim -y --no-install-recommends
 COPY docker/nginx.default /etc/nginx/sites-available/default
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
     && ln -sf /dev/stderr /var/log/nginx/error.log

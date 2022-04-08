@@ -14,14 +14,20 @@
     <div class="main">
         <div class="chat-log" id="chat-log">
             <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br> -->
+        
+            <div class="message my-message">
+                <span class="message-author">Alek</span>
+                <span class="message-content">TESTESTEST</span>
+            </div>
             
         </div>
         <div class="message-input">
             <input class="message-field" id="chat-message-input" type="text" size="100"><br>
             <input class="message-submit" id="chat-message-submit" type="button" value="Send">
         </div>
-    <script src="{% static 'room_page/script.js' %}"></script>
-    <!-- <script src="../static/room_page/script.js"></script> -->
+        
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="{% static 'room_page/script.js' %}"></script>
 </body>
 </html>

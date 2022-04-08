@@ -7,12 +7,13 @@ async def echo(websocket, server):
     print(f"Client added: {websocket}")
     clients.append(websocket)
     async for message in websocket:
-        print(f"Got message: {json.loads(message)}")
+        print(f"Got message: {message}")
         for client in clients:
-            await client.send(message)
+            msg = {"author": "Alek", "message": message}
+            await client.send(json.dumps(msg))
 
 async def main():
-    async with websockets.serve(echo, "localhost", 8765) as server:
+    async with websockets.serve(echo, "localhost", 3100) as server:
         await asyncio.Future()
 
 asyncio.run(main())
