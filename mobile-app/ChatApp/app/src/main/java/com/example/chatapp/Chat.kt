@@ -16,13 +16,21 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.websocket.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
+import java.net.ConnectException
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 
 class Chat : AppCompatActivity() {
+    lateinit var session: DefaultClientWebSocketSession
     lateinit var adapter: MessageAdapter
     lateinit var messagelist: ArrayList<Message>
+    private var scope = CoroutineScope(Dispatchers.IO)
 
 
 
@@ -42,6 +50,7 @@ class Chat : AppCompatActivity() {
 
 
 
+
     }
 
     fun setupButton(login: String?){
@@ -51,6 +60,7 @@ class Chat : AppCompatActivity() {
             val m = Message(messageView.text.toString(), login)
             adapter.addNewMessage(m)
             messageView.text.clear()
+            scope.launch {session.send(m.message!!)}
 
 
         }
@@ -60,19 +70,30 @@ class Chat : AppCompatActivity() {
         val client = HttpClient(CIO){
             install(WebSockets)
         }
-        runBlocking {
-            client.webSocket(method = HttpMethod.Get , host = "127.0.0.1", port = 8765, path = "/"){
-                while (true){
-                    val receiveMessage = incoming.receive() as? Frame.Text
-                    val message = receiveMessage?.readText()
-                    Log.d("debug", message!!)
-                    val messageContent = JSONObject(message)
-                    val m = Message(messageContent.getString("message"),messageContent.getString("author"))
-                    adapter.addNewMessage(m)
+        scope.launch {
+            try{
+                client.webSocket(method = HttpMethod.Get , host = "10.0.2.2", port = 3100, path = "/"){
+                    session = this
+                    session.send("XDXD")
+                    while (true){
+                        val receiveMessage = incoming.receive() as? Frame.Text
+                        val message = receiveMessage?.readText()
+                        Log.d("debug", message!!)
+                        valz messageContent = JSONObject(message)
+                        val m = Message(messageContent.getString("message"),messageContent.getString("author"))
+                        runOnUiThread {
+                            adapter.addNewMessage(m)
+                        }
 
+                    }
                 }
             }
+            catch(e:ConnectException){
+                Toast.makeText(this@Chat, "Connection refused", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
+
 
     }
     fun addTestMessage(login: String?){
