@@ -79,7 +79,7 @@ class Chat : AppCompatActivity() {
                         val receiveMessage = incoming.receive() as? Frame.Text
                         val message = receiveMessage?.readText()
                         Log.d("debug", message!!)
-                        valz messageContent = JSONObject(message)
+                        val messageContent = JSONObject(message)
                         val m = Message(messageContent.getString("message"),messageContent.getString("author"))
                         runOnUiThread {
                             adapter.addNewMessage(m)
