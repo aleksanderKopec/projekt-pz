@@ -7,22 +7,6 @@ if (!author) {
     author = "Anonymous"
 }
 
-// const roomName = JSON.parse(document.getElementById('room-name').textContent);
-
-const chatSocket = new WebSocket(
-    //`ws://${window.location.host}:${WS_PORT}/chat/${roomName}`
-    `ws://${window.location.hostname}:${WS_PORT}`
-);
-
-chatSocket.onmessage = function (e) {
-    const data = JSON.parse(e.data);
-    addMessage(data)
-};
-
-chatSocket.onclose = function (e) {
-    console.error('Chat socket closed unexpectedly');
-};
-
 document.querySelector('#chat-message-input').focus();
 document.querySelector('#chat-message-input').onkeyup = function (e) {
     if (e.keyCode === 13) {  // enter, return
@@ -35,9 +19,26 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     const message = messageInputDom.value;
     if (!message) return
     chatSocket.send(message)
+    addMessage({message: message, author: author})
     messageInputDom.value = '';
 };
 
+
+const chatSocket = new WebSocket(
+    //`ws://${window.location.host}:${WS_PORT}/chat/${roomName}`
+    `ws://${window.location.hostname}:${WS_PORT}`
+);
+
+chatSocket.onmessage = function (e) {
+    console.log(`Got message: ${e.data}`)
+    const data = JSON.parse(e.data);
+    if (data.author == author) return
+    addMessage(data)
+};
+
+chatSocket.onclose = function (e) {
+    console.error('Chat socket closed unexpectedly');
+};
 
 function prepareMessageDiv(data)
 {
@@ -62,7 +63,6 @@ function prepareMessageDiv(data)
 
 function addMessage(data)
 {
-    console.log(`Adding message: ${data}`)
     let divMessage = prepareMessageDiv(data)
     chatLog.appendChild(divMessage)
     chatLog.scrollTop = chatLog.scrollHeight
