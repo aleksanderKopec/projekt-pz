@@ -6,6 +6,7 @@ import conn_managers
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import pymongo
 from bson import json_util
 from typing import Union, List
@@ -14,9 +15,15 @@ import json
 app = FastAPI()
 
 app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=[
-        "achatapp.westeurope.cloudapp.azure.com",
-        "*.achatapp.westeurope.cloudapp.azure.com"]
+    TrustedHostMiddleware, allowed_hosts=["*"]
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 db_manager = conn_managers.DBManager(os.environ["MONGO_URL"])
