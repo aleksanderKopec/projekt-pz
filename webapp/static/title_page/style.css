@@ -1,0 +1,32 @@
+body{
+    display: flex;
+    background-color: lightgrey;
+}
+.main{
+    width: 100%;
+    height: 100%;
+    align-self: center;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+}
+.submit-button{
+    width: 5rem;
+    height: 3rem;
+}
+.input{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.input h2{
+    margin: 0;
+}
+.input input{
+    height: 2rem;
+    width: 20rem;
+    border-radius: 0.5rem;
+    text-align: center;
+}

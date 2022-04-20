@@ -1,1 +1,6 @@
+__pycache__
+.idea
+db.sqlite3
+venv
+websocket-server
 .vscode/

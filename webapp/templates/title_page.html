@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'title_page/style.css' %}">
+    <!-- <link rel="stylesheet" href="../static/title_page/style.css"> -->
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Chat</title>
+</head>
+
+<body>
+    <div class="main">
+
+        <div class="input">
+            <h2 class="input-text">What chat room would you like to enter?</h2>
+            <input id="room-name-input" type="text" size="100" placeholder="Room">
+        </div>
+        <div class="input">
+            <h2 class="input-text">What nick would you like to have?</h2>
+            <input id="author-name-input" type="text" size="100" default="anonymous" placeholder="Nick">
+        </div>
+        <input class="submit-button" id="room-name-submit" type="button" value="Enter">
+    </div>
+    <script src="{% static 'title_page/script.js' %}"></script>
+    <!-- <script src="../static/title_page/script.js"></script> -->
+
+</body>
+
+</html>
