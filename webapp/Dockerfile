@@ -1,5 +1,5 @@
 FROM python:3
-ENV DJANGO_SITE_ADRESS=http://achatapp.westeurope.cloudapp.azure.com
+ENV DJANGO_SITE_ADRESS=achatapp.westeurope.cloudapp.azure.com
 ENV DJANGO_DEBUG=False
 RUN apt-get update && apt-get install nginx vim -y --no-install-recommends
 COPY docker/nginx.default /etc/nginx/sites-available/default
