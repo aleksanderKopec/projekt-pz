@@ -21,4 +21,4 @@ COPY ./docker/start-server.sh .
 
 RUN chmod 755 start-server.sh
 
-CMD ["start-server.sh"]
+CMD ["/code/app/start-server.sh"]
