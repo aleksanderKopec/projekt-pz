@@ -10,7 +10,7 @@ services:
       - db
     build: .
     ports:
-      - 3100:80
+      - 3101:80
     environment:
       - MONGO_URL=mongodb://db:27017/app_development
   webapp:
