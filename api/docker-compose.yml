@@ -21,3 +21,10 @@ services:
       - 8010:8010
     environment:
       - DJANGO_DEBUG=True
+  nginx:
+    build: ..
+    ports:
+      - 3101:3100
+      - 8020:8010
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
