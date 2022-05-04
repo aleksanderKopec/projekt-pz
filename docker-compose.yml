@@ -1,0 +1,33 @@
+services:
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db-data:/data/db
+  api:
+    depends_on:
+      - db
+    build: ./api
+    ports:
+      - 3100:80
+    environment:
+      - MONGO_URL=mongodb://db:27017/app_development
+  webapp:
+    depends_on:
+      - api
+    build: ./webapp
+    volumes:
+      - static_volume:/opt/app/static
+    ports:
+      - 8020:8020
+    environment:
+      - DJANGO_DEBUG=True
+  nginx:
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+    ports:
+      - 1337:80
+    depends_on:
+      - webapp
