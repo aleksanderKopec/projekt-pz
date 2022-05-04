@@ -4,6 +4,8 @@ from time import sleep
 from model.model import MessageModel, MessagesModel
 import conn_managers
 import logging
+from logging.config import dictConfig
+from log_config import LogConfig
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -12,6 +14,9 @@ import pymongo
 from bson import json_util
 from typing import Union, List
 import json
+
+dictConfig(LogConfig().dict())
+logger = logging.getLogger("api")
 
 app = FastAPI()
 
@@ -38,14 +43,14 @@ async def get_messages(channel_id: str, message_id: int | None = None, number_of
 
 @app.websocket("/ws/{channel_id}")
 async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
+    logger.info("Started connection")
     channel = db_manager.get_channel(channel_id)
     connection = channel_connection_manager.get_channel_connection(channel_id)
-
     await connection.connect(websocket)
     try:
         while True:
             data = await websocket.receive_text()
-            print(f"Received a message: {data}")
+            logger.info(f"Received a message: {data}")
             message = MessageModel(
                 message_no=db_manager.get_next_message_no(channel),
                 author=username,
