@@ -45,7 +45,7 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
     try:
         while True:
             data = await websocket.receive_text()
-            logging.info(f"Received a message: {data}")
+            print(f"Received a message: {data}")
             message = MessageModel(
                 message_no=db_manager.get_next_message_no(channel),
                 author=username,
