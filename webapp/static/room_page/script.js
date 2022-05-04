@@ -25,7 +25,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
 
 
 const chatSocket = new WebSocket(
-    `ws://${window.location.hostname}:${WS_PORT}/ws${roomName}?username=${author}`
+    `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
 );
 
 chatSocket.onmessage = function (e) {
