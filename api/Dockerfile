@@ -10,4 +10,4 @@ COPY ./app /code/app
 
 WORKDIR /code/app
 
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--forwarded-allow-ips='*'", "--proxy-headers", "--log-level 'debug'"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80", "--forwarded-allow-ips='*'", "--proxy-headers", "--log-level", "debug"]
