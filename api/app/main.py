@@ -3,6 +3,7 @@ import os
 from time import sleep
 from model.model import MessageModel, MessagesModel
 import conn_managers
+import logging
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
@@ -44,6 +45,7 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
     try:
         while True:
             data = await websocket.receive_text()
+            logging.info(f"Received a message: {data}")
             message = MessageModel(
                 message_no=db_manager.get_next_message_no(channel),
                 author=username,
