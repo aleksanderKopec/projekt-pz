@@ -1,4 +1,4 @@
-const WS_PORT = 8889
+const WS_PORT = 3100
 
 const chatLog = document.getElementById("chat-log")
 const roomName = window.location.pathname.slice(0,-1)
