@@ -1,8 +1,7 @@
-const WS_PORT = 8888
+const WS_PORT = 8889
 
 const chatLog = document.getElementById("chat-log")
-const roomName = window.location.pathname
-const websocketAddress = `ws://${window.location.hostname}:${WS_PORT}/ws${roomName}`
+const roomName = window.location.pathname.slice(0,-1)
 console.log(websocketAddress)
 let author = sessionStorage.getItem("author")
 if (!author) {
@@ -27,7 +26,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
 
 
 const chatSocket = new WebSocket(
-    websocketAddress
+    `ws://${window.location.hostname}:${WS_PORT}/ws${roomName}?username=${author}`
 );
 
 chatSocket.onmessage = function (e) {
