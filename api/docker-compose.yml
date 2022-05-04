@@ -13,3 +13,11 @@ services:
       - 3100:80
     environment:
       - MONGO_URL=mongodb://db:27017/app_development
+  webapp:
+    depends_on:
+      - api
+    build: ../webapp
+    ports:
+      - 8020:8020
+    environment:
+      - DJANGO_DEBUG=True
