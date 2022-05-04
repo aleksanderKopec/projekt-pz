@@ -94,4 +94,5 @@ class ChannelConnectionManager:
             channel_connection = self.channel_connections[channel_no]
         except KeyError:
             channel_connection = ConnectionManager()
+            self.channel_connections[channel_no] = channel_connection
         return channel_connection

@@ -5,6 +5,8 @@ from model.model import MessageModel, MessagesModel
 import conn_managers
 
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import pymongo
 from bson import json_util
 from typing import Union, List
@@ -49,6 +51,6 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
                 timestamp=f"{datetime.datetime.utcnow().isoformat()}"
             )
             channel.insert_one(message.dict())
-            await connection.broadcast(json.dumps(message.json()))
+            await connection.broadcast(message.json())
     except WebSocketDisconnect:
-        channel.disconnect(websocket)
+        connection.disconnect(websocket)
