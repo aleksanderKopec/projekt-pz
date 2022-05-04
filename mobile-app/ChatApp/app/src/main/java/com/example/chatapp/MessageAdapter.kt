@@ -31,12 +31,16 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             val currentMessage = messageList[position]
             val viewHolder = holder as SentViewHolder
             holder.sentMessage.text = currentMessage.message
+            holder.author.text = currentMessage.senderId
+            holder.timestamp.text = currentMessage.timestamp
         }
         else
         {
             val currentMessage = messageList[position]
             val viewHolder = holder as ReceiveViewHolder
             holder.receiveMessage.text = currentMessage.message
+            holder.author.text = currentMessage.senderId
+            holder.timestamp.text = currentMessage.timestamp
         }
 
     }
@@ -55,10 +59,14 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
     }
     class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val sentMessage = itemView.findViewById<TextView>(R.id.txt_sent_message)
+        val author = itemView.findViewById<TextView>(R.id.authors)
+        val timestamp = itemView.findViewById<TextView>(R.id.times)
 
     }
     class ReceiveViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val receiveMessage = itemView.findViewById<TextView>(R.id.txt_recive_message)
+        val author = itemView.findViewById<TextView>(R.id.author)
+        val timestamp = itemView.findViewById<TextView>(R.id.time)
 
     }
     fun addNewMessage(message: Message){
