@@ -14,18 +14,6 @@ import json
 
 app = FastAPI()
 
-app.add_middleware(
-    TrustedHostMiddleware, allowed_hosts=["*"]
-)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
 db_manager = conn_managers.DBManager(os.environ["MONGO_URL"])
 channel_connection_manager = conn_managers.ChannelConnectionManager(db_manager)
 
@@ -63,6 +51,6 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
                 timestamp=f"{datetime.datetime.utcnow().isoformat()}"
             )
             channel.insert_one(message.dict())
-            await connection.broadcast(json.dumps(message.json()))
+            await connection.broadcast(message.json())
     except WebSocketDisconnect:
-        channel.disconnect(websocket)
+        connection.disconnect(websocket)
