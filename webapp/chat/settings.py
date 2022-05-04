@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-ENV_SITE_ADRESS = os.getenv("DJANGO_SITE_ADRESS")
+ENV_SITE_ADDRESS = os.getenv("DJANGO_SITE_ADDRESS")
 ENV_DJANGO_DEBUG = True if os.getenv("DJANGO_DEBUG") == "True" else False
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-wmsb2m$x9eak06g2xc0*-0w*nemb)#*qw2!$=4g7f8g-j%z_81
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = ENV_DJANGO_DEBUG
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', ENV_SITE_ADRESS]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', ENV_SITE_ADDRESS]
 
 
 # Application definition
