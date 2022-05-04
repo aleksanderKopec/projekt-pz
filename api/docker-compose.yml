@@ -22,6 +22,8 @@ services:
     environment:
       - DJANGO_DEBUG=True
   nginx:
+    depends_on:
+      - api
     build: ..
     ports:
       - 8888:8888
