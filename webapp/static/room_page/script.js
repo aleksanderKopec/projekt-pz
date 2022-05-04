@@ -1,7 +1,7 @@
 const WS_PORT = 3100
 
 const chatLog = document.getElementById("chat-log")
-const roomName = window.location.pathname.slice(0,-1)
+const roomName = btoa(window.location.pathname.slice(0,-1))
 let author = sessionStorage.getItem("author")
 if (!author) {
     author = "Anonymous"
