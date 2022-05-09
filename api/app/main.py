@@ -43,12 +43,13 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
     await connection.connect(websocket)
     try:
         while True:
-            data = await websocket.receive_text()
+            data = await websocket.receive_json()
             message = MessageModel(
                 message_no=db_manager.get_next_message_no(channel),
                 author=username,
-                message=data,
-                timestamp=f"{datetime.datetime.utcnow().isoformat()}"
+                message=data["message"],
+                timestamp=f"{datetime.datetime.utcnow().isoformat()}",
+                is_encrypted=data["is_encrypted"]
             )
             channel.insert_one(message.dict())
             await connection.broadcast(message.json())
