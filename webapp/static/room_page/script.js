@@ -7,7 +7,7 @@ require.config({
 const WS_PORT = 3100
 
 const chatLog = document.getElementById("chat-log")
-const roomName = btoa(window.location.pathname.slice(0,-1))
+const roomName = btoa(window.location.pathname.slice(1,-1))
 let author = sessionStorage.getItem("author")
 if (!author) {
     author = "Anonymous"
@@ -92,9 +92,23 @@ function addMessage(data)
 
 function getMessages(channelId, messageId, count)
 {
+    baseUrl = `http://${window.location.hostname}:${WS_PORT}/api/${channelId}`
+    url = ''
+    if (messageId && count)
+    {
+        url = baseUrl + `?message_id=${messageId}&number_of_messages=${count}`
+    }
+    else if (messageId)
+    {
+        url = baseUrl + `?message_id=${messageId}`
+    }
+    else if (count)
+    {
+        url = baseUrl + `?number_of_messages=${count}`
+    }
     return fetch(
-        `http://${window.location.hostname}:${WS_PORT}/api/${channelId}` + 
-        `?message_id=${messageId}&number_of_messages=${count}`, {
+        url,
+        {
             method: 'GET',
             mode: 'cors',
             headers: {
@@ -107,9 +121,8 @@ function loadPreviousMessages()
 {
     getMessages(roomName, 5, 5)
     .then((messages) =>{
-        console.log("Got previous messages:")
-        console.log(messages)
-        messages.forEach(message => {
+        messages = JSON.parse(messages)
+        messages.json.messages.forEach(message => {
             addMessage(message)
         });
     })
