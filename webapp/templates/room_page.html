@@ -24,10 +24,11 @@
         <div class="message-input">
             <input class="message-field" id="chat-message-input" type="text" size="100"><br>
             <input class="message-submit" id="chat-message-submit" type="button" value="Send">
+            <input class="message-password" id="chat-message-password" type="text" value="">
         </div>
         
     </div>
     <script type="application/x-javascript" src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script type="application/x-javascript" src="{% static 'room_page/script.js' %}"></script>
+    <script data-main="../static/room_page/script.js" src="../static/packages/requirejs.js"></script>
 </body>
 </html>

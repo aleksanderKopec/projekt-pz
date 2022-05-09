@@ -1,3 +1,9 @@
+require.config({
+    paths: {
+        'crypto-js': '../packages/bower_components/crypto-js/crypto-js'
+    }
+})
+
 const WS_PORT = 3100
 
 const chatLog = document.getElementById("chat-log")
@@ -17,16 +23,33 @@ document.querySelector('#chat-message-input').onkeyup = function (e) {
 document.querySelector('#chat-message-submit').onclick = function (e) {
     const messageInputDom = document.querySelector('#chat-message-input');
     const message = messageInputDom.value;
+    const password = document.querySelector('#chat-message-password').value
+    let messageObject = {
+        "message": btoa(message),
+        "is_encrypted": false
+    }
     if (!message) return
-    chatSocket.send(message)
+    if (password != "")
+    {
+        messageObject.is_encrypted = true
+        require(["crypto-js"], (CryptoJS) => {
+            messageObject.message = CryptoJS.AES.encrypt(message, password).toString()
+        })
+    }
+    console.log("Sending:")
+    console.log(JSON.stringify(messageObject))
+    chatSocket.send(JSON.stringify(messageObject))
     addMessage({message: message, author: author})
     messageInputDom.value = '';
 };
 
+loadPreviousMessages()
 
 const chatSocket = new WebSocket(
     `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
 );
+
+
 
 chatSocket.onmessage = function (e) {
     console.log(`Got message: ${e.data}`)
@@ -65,4 +88,29 @@ function addMessage(data)
     let divMessage = prepareMessageDiv(data)
     chatLog.appendChild(divMessage)
     chatLog.scrollTop = chatLog.scrollHeight
+}
+
+function getMessages(channelId, messageId, count)
+{
+    return fetch(
+        `http://${window.location.hostname}:${WS_PORT}/api/${channelId}` + 
+        `?message_id=${messageId}&number_of_messages=${count}`, {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Access-Control-Allow-Origin': '*'
+            }
+        })
+}
+
+function loadPreviousMessages()
+{
+    getMessages(roomName, 5, 5)
+    .then((messages) =>{
+        console.log("Got previous messages:")
+        console.log(messages)
+        messages.forEach(message => {
+            addMessage(message)
+        });
+    })
 }
