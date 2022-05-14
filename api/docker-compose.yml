@@ -18,6 +18,15 @@ services:
       - api
     build: ../webapp
     ports:
-      - 8020:8020
+      - 8010:8010
     environment:
       - DJANGO_DEBUG=True
+  nginx:
+    depends_on:
+      - api
+    build: ..
+    ports:
+      - 8888:8888
+      - 8889:8889
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
