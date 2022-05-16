@@ -10,7 +10,7 @@ services:
       - db
     build: ./api
     ports:
-      - 3100:80
+      - 3001:3001
     environment:
       - MONGO_URL=mongodb://db:27017/app_development
   webapp:
@@ -20,7 +20,7 @@ services:
     volumes:
       - static_volume:/opt/app/static
     ports:
-      - 8020:8020
+      - 8010:8010
     environment:
       - DJANGO_DEBUG=True
   nginx:
@@ -28,8 +28,10 @@ services:
     volumes:
       - static_volume:/home/app/web/staticfiles
     ports:
-      - 1337:80
+      - 8000:8000
     depends_on:
+      - db
       - webapp
+      - api
 volumes:
   static_volume:
