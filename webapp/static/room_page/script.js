@@ -4,7 +4,7 @@ require.config({
     }
 })
 
-const WS_PORT = 3100
+const WS_PORT = 8000
 
 const chatLog = document.getElementById("chat-log")
 const roomName = btoa(window.location.pathname.slice(1,-1))
@@ -31,8 +31,8 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     if (!message) return
     if (password != "")
     {
-        messageObject.is_encrypted = true
         require(["crypto-js"], (CryptoJS) => {
+            messageObject.is_encrypted = true
             messageObject.message = CryptoJS.AES.encrypt(message, password).toString()
         })
     }
@@ -43,7 +43,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     messageInputDom.value = '';
 };
 
-loadPreviousMessages()
+//loadPreviousMessages()
 
 const chatSocket = new WebSocket(
     `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
@@ -121,6 +121,7 @@ function loadPreviousMessages()
 {
     getMessages(roomName, 5, 5)
     .then((messages) =>{
+        console.log(messages)
         messages = JSON.parse(messages)
         messages.json.messages.forEach(message => {
             addMessage(message)

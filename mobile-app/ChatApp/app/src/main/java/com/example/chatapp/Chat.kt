@@ -46,7 +46,7 @@ class Chat : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.RecyclerView).layoutManager = LinearLayoutManager(this)
         addTestMessage(login)
         setupButton(login)
-        runWebSiocketClient()
+        runWebSiocketClient(login, code)
 
 
 
@@ -66,13 +66,13 @@ class Chat : AppCompatActivity() {
         }
     }
 
-    fun runWebSiocketClient(){
+    fun runWebSiocketClient(login: String?, code: String?){
         val client = HttpClient(CIO){
             install(WebSockets)
         }
         scope.launch {
             try{
-                client.webSocket(method = HttpMethod.Get , host = "10.0.2.2", port = 3100, path = "/"){
+                client.webSocket(method = HttpMethod.Get , host = "192.168.0.130", port = 8000, path = "/ws/$code/"){
                     session = this
                     session.send("XDXD")
                     while (true){

@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             val intent: Intent = Intent(button.context, Chat:: class.java)
-            intent.putExtra("senderId", loginView.text)
-            intent.putExtra("code", codeView.text)
+            intent.putExtra("senderId", loginView.text.toString())
+            intent.putExtra("code", codeView.text.toString())
 
             startActivity(intent)
 
