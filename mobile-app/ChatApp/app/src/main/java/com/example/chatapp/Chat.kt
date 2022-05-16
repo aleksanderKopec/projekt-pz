@@ -3,6 +3,7 @@ package com.example.chatapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Base64
 import android.util.JsonReader
 import android.util.Log
 import android.widget.Button
@@ -22,6 +23,8 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.net.ConnectException
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -40,13 +43,15 @@ class Chat : AppCompatActivity() {
         val login = intent.getStringExtra("senderId")
         val code = intent.getStringExtra("code")
 
+
+
         messagelist = ArrayList()
         adapter = MessageAdapter(context = applicationContext,messagelist, login )
         findViewById<RecyclerView>(R.id.RecyclerView).adapter = adapter
         findViewById<RecyclerView>(R.id.RecyclerView).layoutManager = LinearLayoutManager(this)
         addTestMessage(login)
         setupButton(login)
-        runWebSiocketClient(login, code)
+        runWebSiocketClient(code,login)
 
 
 
@@ -57,7 +62,7 @@ class Chat : AppCompatActivity() {
         val button = findViewById<ImageView>(R.id.buttonSend)
         button.setOnClickListener {
             val messageView = findViewById<EditText>(R.id.messageBox)
-            val m = Message(messageView.text.toString(), login)
+            val m = Message(messageView.text.toString(), login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
             adapter.addNewMessage(m)
             messageView.text.clear()
             scope.launch {session.send(m.message!!)}
@@ -66,21 +71,23 @@ class Chat : AppCompatActivity() {
         }
     }
 
-    fun runWebSiocketClient(login: String?, code: String?){
+    fun runWebSiocketClient(code: String?, login:String?){
         val client = HttpClient(CIO){
             install(WebSockets)
         }
         scope.launch {
+            val basek4Encoded = Base64.encodeToString(code!!.toByteArray(),Base64.DEFAULT)
+            Log.d(basek4Encoded.toString(),basek4Encoded.toString())
             try{
-                client.webSocket(method = HttpMethod.Get , host = "192.168.0.130", port = 8000, path = "/ws/$code/"){
+                client.webSocket(method = HttpMethod.Get , host = "achatapp.westeurope.cloudapp.azure.com", port = 3100, path = "/ws/${basek4Encoded}?username=${login}"){
                     session = this
-                    session.send("XDXD")
+                   // session.send("XDXD")
                     while (true){
                         val receiveMessage = incoming.receive() as? Frame.Text
                         val message = receiveMessage?.readText()
                         Log.d("debug", message!!)
                         val messageContent = JSONObject(message)
-                        val m = Message(messageContent.getString("message"),messageContent.getString("author"))
+                        val m = Message(messageContent.getString("message"),messageContent.getString("author"),messageContent.getString("timestamp"))
                         runOnUiThread {
                             adapter.addNewMessage(m)
                         }
@@ -89,7 +96,7 @@ class Chat : AppCompatActivity() {
                 }
             }
             catch(e:ConnectException){
-                Toast.makeText(this@Chat, "Connection refused", Toast.LENGTH_SHORT).show()
+                runOnUiThread {Toast.makeText(this@Chat, "Connection refused", Toast.LENGTH_SHORT).show()}
                 finish()
             }
         }
@@ -97,8 +104,8 @@ class Chat : AppCompatActivity() {
 
     }
     fun addTestMessage(login: String?){
-        val m1 = Message("To moja pierwsza wiadomosc",login )
-        val m2 = Message("To wiadomosc od wysylacego", "sad")
+        val m1 = Message("To moja pierwsza wiadomosc",login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
+        val m2 = Message("To wiadomosc od wysylacego", "sad", "jutro")
         adapter.addNewMessage(m1)
         adapter.addNewMessage(m2)
     }
