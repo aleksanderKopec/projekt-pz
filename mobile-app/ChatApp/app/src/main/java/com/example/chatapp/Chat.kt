@@ -12,8 +12,10 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.features.logging.*
 import io.ktor.client.features.websocket.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
@@ -65,7 +67,8 @@ class Chat : AppCompatActivity() {
             val m = Message(messageView.text.toString(), login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
             adapter.addNewMessage(m)
             messageView.text.clear()
-            scope.launch {session.send(m.message!!)}
+            Log.d("SOCKET", Gson().toJson(m))
+            scope.launch {session.send(Gson().toJson(m))}
 
 
         }
@@ -74,14 +77,18 @@ class Chat : AppCompatActivity() {
     fun runWebSiocketClient(code: String?, login:String?){
         val client = HttpClient(CIO){
             install(WebSockets)
+            install(Logging){
+                logger = Logger.DEFAULT
+                level = LogLevel.ALL
+            }
         }
         scope.launch {
             val basek4Encoded = Base64.encodeToString(code!!.toByteArray(),Base64.DEFAULT)
-            Log.d(basek4Encoded.toString(),basek4Encoded.toString())
+            Log.d("BASE64",basek4Encoded.toString())
             try{
-                client.webSocket(method = HttpMethod.Get , host = "achatapp.westeurope.cloudapp.azure.com", port = 3100, path = "/ws/${basek4Encoded}?username=${login}"){
+                client.webSocket(method = HttpMethod.Get , host = "192.168.0.130", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
                     session = this
-                   // session.send("XDXD")
+                    session.send("""{"message":"xdxd","is_encrypted":"false"}""")
                     while (true){
                         val receiveMessage = incoming.receive() as? Frame.Text
                         val message = receiveMessage?.readText()
