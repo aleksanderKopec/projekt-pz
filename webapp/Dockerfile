@@ -1,5 +1,5 @@
 FROM python:3
-ENV DJANGO_SITE_ADDRESS=achatapp.westeurope.cloudapp.azure.com
+ENV DJANGO_SITE_ADDRESS=chatapp.westeurope.cloudapp.azure.com
 ENV DJANGO_DEBUG=False
 RUN apt-get update && apt-get install vim -y --no-install-recommends
 RUN mkdir -p /opt/app
