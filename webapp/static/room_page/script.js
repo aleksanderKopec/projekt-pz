@@ -32,6 +32,8 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     if (!message) return
     if (password != "")
     {
+        console.log(`Password: ${password}`)
+        console.log("Should encrypt message")
         require(["crypto-js"], (CryptoJS) => {
             messageObject.is_encrypted = true
             messageObject.message = CryptoJS.AES.encrypt(message, password).toString()
