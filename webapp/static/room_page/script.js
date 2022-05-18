@@ -1,6 +1,7 @@
 require.config({
+    baseUrl: window.location.host + '/static',
     paths: {
-        'crypto-js': '/static/packages/bower_components/crypto-js/crypto-js'
+        'crypto-js': 'packages/bower_components/crypto-js/crypto-js'
     }
 })
 
