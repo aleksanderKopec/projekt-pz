@@ -23,28 +23,29 @@ document.querySelector('#chat-message-input').onkeyup = function (e) {
 };
 
 document.querySelector('#chat-message-submit').onclick = function (e) {
-    const messageInputDom = document.querySelector('#chat-message-input');
-    const message = messageInputDom.value;
-    const password = document.querySelector('#chat-message-password').value
-    let messageObject = {
-        "message": btoa(message),
-        "is_encrypted": false
-    }
-    if (!message) return
-    if (password != "")
-    {
-        console.log(`Password: ${password}`)
-        console.log("Should encrypt message")
-        require(["crypto-js"], (CryptoJS) => {
+    require(["crypto-js"], (CryptoJS) => {
+        const messageInputDom = document.querySelector('#chat-message-input');
+        const message = messageInputDom.value;
+        const password = document.querySelector('#chat-message-password').value
+        let messageObject = {
+            "message": message,
+            "is_encrypted": false
+        }
+        if (password != "")
+        {
             messageObject.is_encrypted = true
             messageObject.message = CryptoJS.AES.encrypt(message, password).toString()
-        })
-    }
-    console.log("Sending:")
-    console.log(JSON.stringify(messageObject))
-    chatSocket.send(JSON.stringify(messageObject))
-    addMessage({message: messageObject.message, author: author})
-    messageInputDom.value = '';
+        }
+        messageObject.message = btoa(messageObject.message)
+
+        if (!message) return
+        
+        console.log("Sending:")
+        console.log(JSON.stringify(messageObject))
+        chatSocket.send(JSON.stringify(messageObject))
+        addMessage({message: messageObject.message, author: author})
+        messageInputDom.value = '';
+    })
 };
 
 //loadPreviousMessages()
