@@ -8,25 +8,30 @@ services:
   api:
     depends_on:
       - db
-    build: .
+    build: ./api
     ports:
-      - 3100:80
+      - 3001:3001
     environment:
       - MONGO_URL=mongodb://db:27017/app_development
   webapp:
     depends_on:
       - api
-    build: ../webapp
+    build: ./webapp
+    volumes:
+      - static_volume:/opt/app/static
     ports:
       - 8010:8010
     environment:
       - DJANGO_DEBUG=True
   nginx:
-    depends_on:
-      - api
-    build: ..
+    build: ./nginx
+    volumes:
+      - static_volume:/home/app/web/static
     ports:
-      - 8888:8888
-      - 8889:8889
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+      - 8000:8000
+    depends_on:
+      - db
+      - webapp
+      - api
+volumes:
+  static_volume:
