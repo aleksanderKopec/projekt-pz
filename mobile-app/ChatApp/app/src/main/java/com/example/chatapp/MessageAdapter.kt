@@ -1,6 +1,8 @@
 package com.example.chatapp
 
 import android.content.Context
+import android.util.Base64
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +34,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             val viewHolder = holder as SentViewHolder
             holder.sentMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
-            holder.timestamp.text = currentMessage.timestamp
+            holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
         }
         else
         {
@@ -40,7 +42,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             val viewHolder = holder as ReceiveViewHolder
             holder.receiveMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
-            holder.timestamp.text = currentMessage.timestamp
+            holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
         }
 
     }
@@ -70,7 +72,10 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
 
     }
     fun addNewMessage(message: Message){
-
+        val decode = Base64.decode(message.message, Base64.DEFAULT)
+        Log.d("Socket", message.message.toString())
+        message.message = decode.decodeToString()
+        Log.d("Socket", message.message.toString())
         messageList.add(message)
         notifyItemChanged(messageList.size -1 )
 

@@ -47,7 +47,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     messageInputDom.value = '';
 };
 
-//loadPreviousMessages()
+loadPreviousMessages()
 
 const chatSocket = new WebSocket(
     `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
