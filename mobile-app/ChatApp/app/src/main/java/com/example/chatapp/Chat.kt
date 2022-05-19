@@ -26,6 +26,7 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.net.ConnectException
 import java.time.Instant
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -35,6 +36,7 @@ class Chat : AppCompatActivity() {
     lateinit var session: DefaultClientWebSocketSession
     lateinit var adapter: MessageAdapter
     lateinit var messagelist: ArrayList<Message>
+    lateinit var view: RecyclerView
     private var scope = CoroutineScope(Dispatchers.IO)
 
 
@@ -51,12 +53,10 @@ class Chat : AppCompatActivity() {
         adapter = MessageAdapter(context = applicationContext,messagelist, login )
         findViewById<RecyclerView>(R.id.RecyclerView).adapter = adapter
         findViewById<RecyclerView>(R.id.RecyclerView).layoutManager = LinearLayoutManager(this)
-        addTestMessage(login)
+        //addTestMessage(login)
         setupButton(login)
         runWebSiocketClient(code,login)
-
-
-
+        view = findViewById<RecyclerView>(R.id.RecyclerView)
 
     }
 
@@ -64,11 +64,13 @@ class Chat : AppCompatActivity() {
         val button = findViewById<ImageView>(R.id.buttonSend)
         button.setOnClickListener {
             val messageView = findViewById<EditText>(R.id.messageBox)
-            val m = Message(messageView.text.toString(), login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
-            adapter.addNewMessage(m)
+            val m = Message(messageView.text.toString(), login, LocalDateTime.now())
+
             messageView.text.clear()
             Log.d("SOCKET", Gson().toJson(m))
-            scope.launch {session.send(Gson().toJson(m))}
+            runBlocking {session.send(Gson().toJson(m))}
+            adapter.addNewMessage(m)
+            view.scrollToPosition(adapter.itemCount - 1)
 
 
         }
@@ -86,7 +88,7 @@ class Chat : AppCompatActivity() {
             val basek4Encoded = Base64.encodeToString(code!!.toByteArray(),Base64.DEFAULT)
             Log.d("BASE64",basek4Encoded.toString())
             try{
-                client.webSocket(method = HttpMethod.Get , host = "192.168.0.130", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
+                client.webSocket(method = HttpMethod.Get , host = "chatapp.westeurope.cloudapp.azure.com", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
                     session = this
                     session.send("""{"message":"xdxd","is_encrypted":"false"}""")
                     while (true){
@@ -94,9 +96,14 @@ class Chat : AppCompatActivity() {
                         val message = receiveMessage?.readText()
                         Log.d("debug", message!!)
                         val messageContent = JSONObject(message)
-                        val m = Message(messageContent.getString("message"),messageContent.getString("author"),messageContent.getString("timestamp"))
+                        val decode = Base64.decode(messageContent.getString("message"), Base64.DEFAULT)
+                        val m = Message(decode.decodeToString(),messageContent.getString("author"),LocalDateTime.parse(messageContent.getString("timestamp")))
                         runOnUiThread {
-                            adapter.addNewMessage(m)
+                            if(m.senderId != login) {
+                                adapter.addNewMessage(m)
+                                view.scrollToPosition(adapter.itemCount - 1)
+
+                            }
                         }
 
                     }
@@ -110,11 +117,11 @@ class Chat : AppCompatActivity() {
 
 
     }
-    fun addTestMessage(login: String?){
-        val m1 = Message("To moja pierwsza wiadomosc",login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
-        val m2 = Message("To wiadomosc od wysylacego", "sad", "jutro")
-        adapter.addNewMessage(m1)
-        adapter.addNewMessage(m2)
-    }
-
+//    fun addTestMessage(login: String?){
+//        val m1 = Message("To moja pierwsza wiadomosc",login, LocalDateTime.now())
+//        val m2 = Message("To wiadomosc od wysylacego", "sad", LocalDateTime.now())
+//        adapter.addNewMessage(m1)
+//        adapter.addNewMessage(m2)
+//    }
+//
 }
