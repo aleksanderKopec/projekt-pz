@@ -26,7 +26,10 @@ import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.net.ConnectException
 import java.time.Instant
+<<<<<<< HEAD
 import java.time.LocalDateTime
+=======
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
@@ -56,7 +59,13 @@ class Chat : AppCompatActivity() {
         //addTestMessage(login)
         setupButton(login)
         runWebSiocketClient(code,login)
+<<<<<<< HEAD
         view = findViewById<RecyclerView>(R.id.RecyclerView)
+=======
+
+
+
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
 
     }
 
@@ -64,6 +73,7 @@ class Chat : AppCompatActivity() {
         val button = findViewById<ImageView>(R.id.buttonSend)
         button.setOnClickListener {
             val messageView = findViewById<EditText>(R.id.messageBox)
+<<<<<<< HEAD
             val m = Message(messageView.text.toString(), login, LocalDateTime.now())
 
             messageView.text.clear()
@@ -71,6 +81,13 @@ class Chat : AppCompatActivity() {
             runBlocking {session.send(Gson().toJson(m))}
             adapter.addNewMessage(m)
             view.scrollToPosition(adapter.itemCount - 1)
+=======
+            val m = Message(messageView.text.toString(), login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
+            adapter.addNewMessage(m)
+            messageView.text.clear()
+            Log.d("SOCKET", Gson().toJson(m))
+            scope.launch {session.send(Gson().toJson(m))}
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
 
 
         }
@@ -88,7 +105,11 @@ class Chat : AppCompatActivity() {
             val basek4Encoded = Base64.encodeToString(code!!.toByteArray(),Base64.DEFAULT)
             Log.d("BASE64",basek4Encoded.toString())
             try{
+<<<<<<< HEAD
                 client.webSocket(method = HttpMethod.Get , host = "chatapp.westeurope.cloudapp.azure.com", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
+=======
+                client.webSocket(method = HttpMethod.Get , host = "192.168.0.130", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
                     session = this
                     session.send("""{"message":"xdxd","is_encrypted":"false"}""")
                     while (true){
@@ -96,8 +117,12 @@ class Chat : AppCompatActivity() {
                         val message = receiveMessage?.readText()
                         Log.d("debug", message!!)
                         val messageContent = JSONObject(message)
+<<<<<<< HEAD
                         val decode = Base64.decode(messageContent.getString("message"), Base64.DEFAULT)
                         val m = Message(decode.decodeToString(),messageContent.getString("author"),LocalDateTime.parse(messageContent.getString("timestamp")))
+=======
+                        val m = Message(messageContent.getString("message"),messageContent.getString("author"),messageContent.getString("timestamp"))
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
                         runOnUiThread {
                             if(m.senderId != login) {
                                 adapter.addNewMessage(m)
@@ -117,6 +142,7 @@ class Chat : AppCompatActivity() {
 
 
     }
+<<<<<<< HEAD
 //    fun addTestMessage(login: String?){
 //        val m1 = Message("To moja pierwsza wiadomosc",login, LocalDateTime.now())
 //        val m2 = Message("To wiadomosc od wysylacego", "sad", LocalDateTime.now())
@@ -124,4 +150,13 @@ class Chat : AppCompatActivity() {
 //        adapter.addNewMessage(m2)
 //    }
 //
+=======
+    fun addTestMessage(login: String?){
+        val m1 = Message("To moja pierwsza wiadomosc",login, DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString())
+        val m2 = Message("To wiadomosc od wysylacego", "sad", "jutro")
+        adapter.addNewMessage(m1)
+        adapter.addNewMessage(m2)
+    }
+
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
 }

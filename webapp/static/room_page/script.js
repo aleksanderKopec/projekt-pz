@@ -1,6 +1,12 @@
 require.config({
+<<<<<<< HEAD
     paths: {
         'crypto-js': '../packages/bower_components/crypto-js/crypto-js'
+=======
+    baseUrl: 'http://' + window.location.host + '/static',
+    paths: {
+        'crypto-js': 'packages/bower_components/crypto-js/crypto-js'
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
     }
 })
 
@@ -32,6 +38,11 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     if (!message) return
     if (password != "")
     {
+<<<<<<< HEAD
+=======
+        console.log(`Password: ${password}`)
+        console.log("Should encrypt message")
+>>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
         require(["crypto-js"], (CryptoJS) => {
             messageObject.is_encrypted = true
             messageObject.message = CryptoJS.AES.encrypt(message, password).toString()
@@ -76,7 +87,7 @@ function prepareMessageDiv(data)
     messageAuthorSpan.textContent = data.author
     messageAuthorSpan.classList.add("message-author")
     let messageContentSpan = document.createElement("span")
-    messageContentSpan.innerHTML = marked.parse(data.message)
+    messageContentSpan.innerHTML = marked.parse(btoa(data.message))
     messageContentSpan.classList.add("message-content")
 
     div.appendChild(messageAuthorSpan)
