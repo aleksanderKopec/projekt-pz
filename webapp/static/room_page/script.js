@@ -43,11 +43,11 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     console.log("Sending:")
     console.log(JSON.stringify(messageObject))
     chatSocket.send(JSON.stringify(messageObject))
-    addMessage({message: message, author: author})
+    addMessage({message: messageObject.message, author: author})
     messageInputDom.value = '';
 };
 
-loadPreviousMessages()
+//loadPreviousMessages()
 
 const chatSocket = new WebSocket(
     `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
@@ -79,7 +79,8 @@ function prepareMessageDiv(data)
     messageAuthorSpan.textContent = data.author
     messageAuthorSpan.classList.add("message-author")
     let messageContentSpan = document.createElement("span")
-    messageContentSpan.innerHTML = marked.parse(data.message)
+    let debasedMessage = atob(data.message)
+    messageContentSpan.innerHTML = marked.parse(debasedMessage)
     messageContentSpan.classList.add("message-content")
 
     div.appendChild(messageAuthorSpan)
