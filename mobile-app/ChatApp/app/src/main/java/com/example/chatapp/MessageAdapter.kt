@@ -34,11 +34,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             val viewHolder = holder as SentViewHolder
             holder.sentMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
-<<<<<<< HEAD
             holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
-=======
-            holder.timestamp.text = currentMessage.timestamp
->>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
         }
         else
         {
@@ -46,11 +42,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             val viewHolder = holder as ReceiveViewHolder
             holder.receiveMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
-<<<<<<< HEAD
             holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
-=======
-            holder.timestamp.text = currentMessage.timestamp
->>>>>>> 8f0ddd78b0fce2d5d4a77330145ef918f3f29423
         }
 
     }
