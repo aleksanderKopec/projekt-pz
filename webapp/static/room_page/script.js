@@ -79,12 +79,8 @@ function prepareMessageDiv(data)
     messageAuthorSpan.textContent = data.author
     messageAuthorSpan.classList.add("message-author")
     let messageContentSpan = document.createElement("span")
-<<<<<<< HEAD
-    messageContentSpan.innerHTML = marked.parse(btoa(data.message))
-=======
     let debasedMessage = atob(data.message)
     messageContentSpan.innerHTML = marked.parse(debasedMessage)
->>>>>>> d5b063146aacaab325d289b95c1e3b750222a38f
     messageContentSpan.classList.add("message-content")
 
     div.appendChild(messageAuthorSpan)
