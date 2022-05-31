@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import io.noties.markwon.Markwon
+
 
 class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, val yourid: String?):
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -30,9 +32,11 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if(holder.javaClass == SentViewHolder:: class.java)
         {
+            val markwon: Markwon = Markwon.create(context)
             val currentMessage = messageList[position]
             val viewHolder = holder as SentViewHolder
-            holder.sentMessage.text = currentMessage.message
+            markwon.setMarkdown(holder.sentMessage, currentMessage.message!!)
+            //holder.sentMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
             holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
         }
@@ -60,6 +64,7 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
         return messageList.size
     }
     class SentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+
         val sentMessage = itemView.findViewById<TextView>(R.id.txt_sent_message)
         val author = itemView.findViewById<TextView>(R.id.authors)
         val timestamp = itemView.findViewById<TextView>(R.id.times)

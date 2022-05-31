@@ -25,13 +25,13 @@
 
         <EditText
             android:id="@+id/messageBox"
-            android:layout_width="wrap_content"
+            android:layout_width="127dp"
             android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="90"
-            android:hint="Type a messege"
             android:background="@drawable/message_box_background"
-            android:paddingLeft="10dp"
-            android:layout_marginLeft="10dp"/>
+            android:hint="Type a messege"
+            android:paddingLeft="10dp" />
 
         <ImageView
             android:id="@+id/buttonSend"

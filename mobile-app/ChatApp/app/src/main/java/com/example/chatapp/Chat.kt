@@ -1,12 +1,10 @@
 package com.example.chatapp
 
-import android.content.Intent
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Base64
-import android.util.JsonReader
 import android.util.Log
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
@@ -25,11 +23,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.json.JSONObject
 import java.net.ConnectException
-import java.time.Instant
+import java.security.Key
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.util.concurrent.Executor
-import java.util.concurrent.Executors
+import javax.crypto.Cipher
 
 
 class Chat : AppCompatActivity() {
@@ -46,6 +42,7 @@ class Chat : AppCompatActivity() {
         setContentView(R.layout.activity_chat_room)
         val login = intent.getStringExtra("senderId")
         val code = intent.getStringExtra("code")
+        val codeID = intent.getStringExtra("codeID")
 
 
 
@@ -55,7 +52,7 @@ class Chat : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.RecyclerView).layoutManager = LinearLayoutManager(this)
         //addTestMessage(login)
         setupButton(login)
-        runWebSiocketClient(code,login)
+        runWebSiocketClient(code,login,codeID)
         view = findViewById<RecyclerView>(R.id.RecyclerView)
 
     }
@@ -76,7 +73,7 @@ class Chat : AppCompatActivity() {
         }
     }
 
-    fun runWebSiocketClient(code: String?, login:String?){
+    fun runWebSiocketClient(code: String?, login:String?,codeID:String?){
         val client = HttpClient(CIO){
             install(WebSockets)
             install(Logging){
@@ -98,6 +95,10 @@ class Chat : AppCompatActivity() {
                         val messageContent = JSONObject(message)
                         val decode = Base64.decode(messageContent.getString("message"), Base64.DEFAULT)
                         val m = Message(decode.decodeToString(),messageContent.getString("author"),LocalDateTime.parse(messageContent.getString("timestamp")))
+//                        if(m.is_encrypted == true && !codeID.isNullOrBlank()){
+//                            val cipher = Cipher.getInstance("AES")
+//                            cipher.init(Cipher.DECRYPT_MODE, Key(codeID))
+//                        }
                         runOnUiThread {
                             if(m.senderId != login) {
                                 adapter.addNewMessage(m)
@@ -117,11 +118,4 @@ class Chat : AppCompatActivity() {
 
 
     }
-//    fun addTestMessage(login: String?){
-//        val m1 = Message("To moja pierwsza wiadomosc",login, LocalDateTime.now())
-//        val m2 = Message("To wiadomosc od wysylacego", "sad", LocalDateTime.now())
-//        adapter.addNewMessage(m1)
-//        adapter.addNewMessage(m2)
-//    }
-//
 }
