@@ -28,7 +28,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
         const message = messageInputDom.value;
         const password = document.querySelector('#chat-message-password').value
         let messageObject = {
-            "message": message,
+            "message": atob(message),
             "is_encrypted": false
         }
         if (password != "")
