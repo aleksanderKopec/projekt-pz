@@ -28,7 +28,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
         const message = messageInputDom.value;
         const password = document.querySelector('#chat-message-password').value
         let messageObject = {
-            "message": atob(message),
+            "message": btoa(message),
             "is_encrypted": false
         }
         if (password != "")
@@ -81,6 +81,7 @@ function prepareMessageDiv(data)
     messageAuthorSpan.classList.add("message-author")
     let messageContentSpan = document.createElement("span")
     let debasedMessage = atob(data.message)
+    console.log(debasedMessage)
     messageContentSpan.innerHTML = marked.parse(debasedMessage)
     messageContentSpan.classList.add("message-content")
 
