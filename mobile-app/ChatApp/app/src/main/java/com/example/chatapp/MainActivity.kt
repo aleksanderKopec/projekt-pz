@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("senderId", loginView.text.toString())
             intent.putExtra("code", codeView.text.toString())
 
+
             startActivity(intent)
 
         }

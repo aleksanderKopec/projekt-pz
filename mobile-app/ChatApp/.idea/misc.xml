@@ -23,6 +23,16 @@
         <entry key="..\:/Users/jakub/Desktop/ChatApp/app/src/main/res/layout/activity_main.xml" value="0.20104166666666667" />
         <entry key="..\:/Users/jakub/Desktop/ChatApp/app/src/main/res/layout/recive.xml" value="0.20104166666666667" />
         <entry key="..\:/Users/jakub/Desktop/ChatApp/app/src/main/res/layout/sent.xml" value="0.20104166666666667" />
+        <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.136" />
+        <entry key="app/src/main/res/drawable/cloud.xml" value="0.122" />
+        <entry key="app/src/main/res/drawable/edit_background.xml" value="0.136" />
+        <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.136" />
+        <entry key="app/src/main/res/drawable/message_box_background.xml" value="0.136" />
+        <entry key="app/src/main/res/drawable/recive.xml" value="0.136" />
+        <entry key="app/src/main/res/layout/activity_chat_room.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/recive.xml" value="0.24479166666666666" />
+        <entry key="app/src/main/res/layout/sent.xml" value="0.24479166666666666" />
       </map>
     </option>
   </component>

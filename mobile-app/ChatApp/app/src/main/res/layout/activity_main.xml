@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="150dp"
@@ -69,6 +70,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/code" />
+
+    Napisz na Alek, Wilq
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
