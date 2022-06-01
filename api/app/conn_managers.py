@@ -50,8 +50,11 @@ class DBManager:
     def get_channel(self, channel_id: str) -> Collection:
         return self.db[f"channel_{self.get_channel_no(channel_id)}"]
 
-    def get_messages(self, channel: Collection, number_of_messages: int = 0) -> list:
-        messages = channel.find(
+    def get_messages(self, channel: Collection, number_of_messages: int = 0, message_id: int | None = None) -> list:
+        filter = {}
+        if message_id is not None:
+            filter = {"message_no": {"$lte": message_id}}
+        messages = channel.find(filter,
             sort=[("message_no", pymongo.DESCENDING)], limit=number_of_messages)
         return list(messages)
 
@@ -80,7 +83,10 @@ class ConnectionManager:
 
     async def broadcast(self, message: str):
         for connection in self.active_connections:
-            await connection.send_text(message)
+            try:
+                await connection.send_text(message)
+            except RuntimeError:
+                self.active_connections.remove(connection)
 
 
 class ChannelConnectionManager:
