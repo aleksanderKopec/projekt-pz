@@ -28,7 +28,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     const password = document.querySelector('#chat-message-password').value
     let messageObject = {
         "message": btoa(message),
-        "is_encrypted": false
+        "is_image": false
     }
     if (!message) return
     if (password != "")
@@ -36,7 +36,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
         console.log(`Password: ${password}`)
         console.log("Should encrypt message")
         require(["crypto-js"], (CryptoJS) => {
-            messageObject.is_encrypted = true
+            messageObject.is_image = true
             messageObject.message = CryptoJS.AES.encrypt(message, password).toString()
         })
     }
