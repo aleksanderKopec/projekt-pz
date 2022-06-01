@@ -1,0 +1,11 @@
+.login-box {
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid red;
+}
+
+.submit-button{
+    align-self: center;
+}
