@@ -48,7 +48,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
     })
 };
 
-//loadPreviousMessages()
+loadPreviousMessages()
 
 const chatSocket = new WebSocket(
     `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
@@ -57,7 +57,7 @@ const chatSocket = new WebSocket(
 
 
 chatSocket.onmessage = function (e) {
-    console.log(`Got message: ${e.data}`)
+    console.log(`Got message: ${e.data}`)   
     const data = JSON.parse(e.data);
     if (data.author == author) return
     addMessage(data)
@@ -127,11 +127,14 @@ function getMessages(channelId, messageId, count)
 function loadPreviousMessages()
 {
     getMessages(roomName, 5, 5)
-    .then((messages) =>{
-        console.log(messages)
-        messages = JSON.parse(messages)
-        messages.json.messages.forEach(message => {
-            addMessage(message)
-        });
+    .then((response) =>{
+        response.json()
+        .then((body) => {
+            console.log(body)
+            body.messages.forEach(message => {
+                addMessage(message)
+            });
+        })
+        
     })
 }
