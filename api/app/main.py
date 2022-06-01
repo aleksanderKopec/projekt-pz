@@ -57,7 +57,7 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
                 author=username,
                 message=data["message"],
                 timestamp=f"{datetime.datetime.utcnow().isoformat()}",
-                is_encrypted=data["is_encrypted"]
+                is_image=data["is_image"]
             )
             channel.insert_one(message.dict())
             await connection.broadcast(message.json())
