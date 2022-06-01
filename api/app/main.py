@@ -14,6 +14,14 @@ import json
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 db_manager = conn_managers.DBManager(os.environ["MONGO_URL"])
 channel_connection_manager = conn_managers.ChannelConnectionManager(db_manager)
 
