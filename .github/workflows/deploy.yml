@@ -13,7 +13,7 @@ jobs:
         run: echo "${{secrets.VM_SSH_KEY}}" > id_rsa
 
       - name: Trigger git pull on VM
-        run: ssh -i id_rsa azureuser@chatapp.westeurope.cloudapp.azure.com "cd projekt_pz && git pull"
+        run: ssh -i id_rsa -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null azureuser@chatapp.westeurope.cloudapp.azure.com "cd projekt_pz && git pull"
       
       - name: Rebuild app
-        run: ssh -i id_rsa azureuser@chatapp.westeurope.cloudapp.azure.com/projekt_pz "cd projekt_pz && sudo docker compose up --build -d"
+        run: ssh -i id_rsa -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null azureuser@chatapp.westeurope.cloudapp.azure.com/projekt_pz "cd projekt_pz && sudo docker compose up --build -d"
