@@ -1,0 +1,19 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract ssh key
+        run: echo "${{secrets.VM_SSH_KEY}}" > id_rsa
+
+      - name: Trigger git pull on VM
+        run: ssh -i id_rsa azureuser@chatapp.westeurope.cloudapp.azure.com "cd projekt_pz && git pull"
+      
+      - name: Rebuild app
+        run: ssh -i id_rsa azureuser@chatapp.westeurope.cloudapp.azure.com/projekt_pz "cd projekt_pz && sudo docker compose up --build -d"
