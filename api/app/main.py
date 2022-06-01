@@ -36,9 +36,9 @@ async def get_messages(channel_id: str, message_id: int | None = None, number_of
     channel = db_manager.get_channel(channel_id)
 
     if number_of_messages is not None:
-        messages = db_manager.get_messages(channel, number_of_messages)
+        messages = db_manager.get_messages(channel, number_of_messages, message_id)
     else:
-        messages = db_manager.get_messages(channel, 10)
+        messages = db_manager.get_messages(channel, 10, message_id)
 
     return MessagesModel(channel_id=channel_id, messages=messages)
 
