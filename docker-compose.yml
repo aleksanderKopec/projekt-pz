@@ -17,21 +17,13 @@ services:
     depends_on:
       - api
     build: ./webapp
-    volumes:
-      - static_volume:/opt/app/static
     ports:
-      - 8010:8010
-    environment:
-      - DJANGO_DEBUG=True
+      - 3000:3000
   nginx:
     build: ./nginx
-    volumes:
-      - static_volume:/home/app/web/static
     ports:
       - 8000:8000
     depends_on:
       - db
       - webapp
       - api
-volumes:
-  static_volume:
