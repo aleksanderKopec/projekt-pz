@@ -6,14 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+
     <ImageView
         android:id="@+id/app_logo"
         android:layout_width="150dp"
-        android:layout_height="0dp"
+        android:layout_height="150dp"
 
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="62dp"
-        android:layout_marginBottom="86dp"
+        android:layout_marginStart="130dp"
+        android:layout_marginTop="73dp"
+        android:layout_marginEnd="131dp"
+        android:layout_marginBottom="67dp"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toTopOf="@+id/login"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,48 +25,34 @@
 
     <EditText
         android:id="@+id/login"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="267dp"
+        android:layout_height="60dp"
         android:layout_below="@id/app_logo"
         android:layout_marginStart="72dp"
+        android:layout_marginTop="67dp"
         android:layout_marginEnd="72dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginBottom="28dp"
         android:background="@drawable/edit_background"
-        android:hint="Login"
+        android:hint="Nickname"
         android:paddingLeft="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/codeID"
+        app:layout_constraintBottom_toTopOf="@+id/code"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_logo" />
 
     <EditText
         android:id="@+id/code"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="267dp"
+        android:layout_height="60dp"
         android:layout_below="@id/app_logo"
         android:layout_marginStart="72dp"
         android:layout_marginEnd="72dp"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="23dp"
         android:background="@drawable/edit_background"
-        android:hint="Code room"
+        android:hint="Room Name"
         android:paddingLeft="10dp"
         app:layout_constraintBottom_toTopOf="@+id/button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/codeID" />
-
-    <EditText
-        android:id="@+id/codeID"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_below="@id/app_logo"
-        android:layout_marginStart="72dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/edit_background"
-        android:hint="Pasword"
-        android:paddingLeft="10dp"
-        app:layout_constraintBottom_toTopOf="@+id/code"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
@@ -71,13 +60,19 @@
     <Button
         android:id="@+id/button"
         android:layout_width="139dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="142dp"
+        android:layout_height="74dp"
+        android:layout_marginStart="136dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="136dp"
+        android:layout_marginBottom="124dp"
         android:text="Log in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/code" />
+
+    Napisz na Alek, Wilq
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

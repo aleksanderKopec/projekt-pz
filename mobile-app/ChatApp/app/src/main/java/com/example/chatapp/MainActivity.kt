@@ -22,7 +22,6 @@ class MainActivity : AppCompatActivity() {
         button.setOnClickListener{
             val loginView = findViewById<EditText>(R.id.login)
             val codeView = findViewById<EditText>(R.id.code)
-            val codeID = findViewById<EditText>(R.id.codeID)
             if(loginView.text.isNullOrBlank() || codeView.text.isNullOrBlank()){
                 Toast.makeText(this@MainActivity, "Wrong", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -30,7 +29,7 @@ class MainActivity : AppCompatActivity() {
             val intent: Intent = Intent(button.context, Chat:: class.java)
             intent.putExtra("senderId", loginView.text.toString())
             intent.putExtra("code", codeView.text.toString())
-            intent.putExtra("codeID",codeID.text.toString())
+
 
             startActivity(intent)
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.noties.markwon.Markwon
+import io.noties.markwon.image.ImagesPlugin
 
 
 class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, val yourid: String?):
@@ -30,9 +31,11 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
         }
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         if(holder.javaClass == SentViewHolder:: class.java)
         {
-            val markwon: Markwon = Markwon.create(context)
+            val markwon: Markwon = Markwon.builder(context).usePlugin(ImagesPlugin.create())
+                .build();
             val currentMessage = messageList[position]
             val viewHolder = holder as SentViewHolder
             markwon.setMarkdown(holder.sentMessage, currentMessage.message!!)
@@ -42,9 +45,12 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
         }
         else
         {
+            val markwon: Markwon = Markwon.builder(context).usePlugin(ImagesPlugin.create())
+                .build();
             val currentMessage = messageList[position]
             val viewHolder = holder as ReceiveViewHolder
-            holder.receiveMessage.text = currentMessage.message
+            markwon.setMarkdown(holder.receiveMessage, currentMessage.message!!)
+            //holder.receiveMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
             holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
         }
