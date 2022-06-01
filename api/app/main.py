@@ -52,6 +52,15 @@ async def ws_chat(websocket: WebSocket, channel_id: str, username: str):
     try:
         while True:
             data = await websocket.receive_json()
+            if "message" not in data:
+                print("ERROR: Received object without message key")
+                continue
+            if "is_image" not in data:
+                data["is_image"] = False
+            if len(data["message"]) > 8192:
+                print("ERROR: Message too big")
+                continue
+            
             message = MessageModel(
                 message_no=db_manager.get_next_message_no(channel),
                 author=username,
