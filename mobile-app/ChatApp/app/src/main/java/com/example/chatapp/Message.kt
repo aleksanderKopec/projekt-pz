@@ -12,14 +12,14 @@ class Message {
     var timestamp: LocalDateTime ? = null
 
 
-    var is_encrypted: Boolean? = false
+    var is_image: Boolean? = false
     constructor(){}
 
     constructor(message: String?, senderId: String?, timestamp: LocalDateTime, isEncrypted: Boolean = false){
 
         this.senderId = senderId
         this.timestamp = timestamp
-        this.is_encrypted = isEncrypted
+        this.is_image = isEncrypted
         this.message = Base64.encodeToString(message!!.toByteArray(),Base64.DEFAULT)
 
     }
@@ -27,7 +27,7 @@ class Message {
     override fun toString(): String
     {
 
-        return "message: $message, is_encrypted: $is_encrypted"
+        return "message: $message, is_image: $is_image"
     }
 
 

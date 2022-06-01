@@ -90,7 +90,7 @@ class Chat : AppCompatActivity() {
             try{
                 client.webSocket(method = HttpMethod.Get , host = "chatapp.westeurope.cloudapp.azure.com", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
                     session = this
-                    session.send("""{"message":"xdxd","is_encrypted":"false"}""")
+                    session.send("""{"message":"xdxd","is_image":"false"}""")
                     while (true){
                         val receiveMessage = incoming.receive() as? Frame.Text
                         val message = receiveMessage?.readText()
