@@ -43,7 +43,7 @@ document.querySelector('#chat-message-submit').onclick = function (e) {
         console.log("Sending:")
         console.log(JSON.stringify(messageObject))
         chatSocket.send(JSON.stringify(messageObject))
-        addMessage({message: messageObject.message, author: author})
+        addMessage({message: messageObject.message, author: author}, password)
         messageInputDom.value = '';
     })
 };
@@ -67,32 +67,38 @@ chatSocket.onclose = function (e) {
     console.error('Chat socket closed unexpectedly');
 };
 
-function prepareMessageDiv(data)
+function prepareMessageDiv(data, password)
 {
-    let div = document.createElement("div")
-    div.classList.add("message")
-    if (author === data.author)
-    {
-        div.classList.add("my-message")
-    }
+    require(["crypto-js"], (CryptoJS) => {
+        let div = document.createElement("div")
+        div.classList.add("message")
+        if (author === data.author)
+        {
+            div.classList.add("my-message")
+        }
 
-    let messageAuthorSpan = document.createElement("span")
-    messageAuthorSpan.textContent = data.author
-    messageAuthorSpan.classList.add("message-author")
-    let messageContentSpan = document.createElement("span")
-    let debasedMessage = atob(data.message)
-    console.log(debasedMessage)
-    messageContentSpan.innerHTML = marked.parse(debasedMessage)
-    messageContentSpan.classList.add("message-content")
+        let messageAuthorSpan = document.createElement("span")
+        messageAuthorSpan.textContent = data.author
+        messageAuthorSpan.classList.add("message-author")
+        let messageContentSpan = document.createElement("span")
+        let debasedMessage = atob(data.message)
+        console.log("Debased mesasgE:", debasedMessage)
+        if (data.is_encrypted)
+        {
+            debasedMessage = CryptoJS.AES.decrypt(debasedMessage, password)
+        }
+        messageContentSpan.innerHTML = marked.parse(debasedMessage)
+        messageContentSpan.classList.add("message-content")
 
-    div.appendChild(messageAuthorSpan)
-    div.appendChild(messageContentSpan)
-    return div
+        div.appendChild(messageAuthorSpan)
+        div.appendChild(messageContentSpan)
+        return div
+    })
 }
 
-function addMessage(data)
+function addMessage(data, password)
 {
-    let divMessage = prepareMessageDiv(data)
+    let divMessage = prepareMessageDiv(data, password)
     chatLog.appendChild(divMessage)
     chatLog.scrollTop = chatLog.scrollHeight
 }
