@@ -24,9 +24,12 @@ export default function Login() {
 
     return (
         <Box
-            component="form"
             sx={{
-                '& .MuiTextField-root': { m: 1, width: '25ch' },
+                display:"flex",
+                flexFlow:"column",
+                justifyContent:"center",
+                alignItems:"center",
+                gap:"0.5rem",
             }}
             noValidate
             autoComplete="off"
@@ -54,7 +57,7 @@ export default function Login() {
                     onChange={handleRoomNameChange}
                 />
             </div>
-            <Button className='submit-button' variant="contained" onClick={connectToRoom}>Contained</Button>
+            <Button className='submit-button' variant="contained" onClick={connectToRoom}>Join room</Button>
         </Box>
     );
 }

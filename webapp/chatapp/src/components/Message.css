@@ -3,6 +3,14 @@
     flex-direction: column;
 }
 
+.bubble-container{
+    max-height: 100%;
+}
+
+.message{
+    max-width: 100%;
+}
+
 .message .timestamp {
     display: flex;
     justify-content: center;
@@ -47,12 +55,16 @@
     background: #a5d6a7;
     padding: 10px 15px;
     border-radius: 20px;
-    max-width: 75%;
+    /* max-width: 75%; */
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     word-wrap: break-word;
+}
+
+.bubble{
+    max-width: 40em;
 }
 
 .message.mine .bubble-container .bubble {
@@ -62,4 +74,9 @@
     border-bottom-left-radius: 20px;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
+}
+
+img {
+    object-fit: contain;
+    max-width: 100%;
 }
