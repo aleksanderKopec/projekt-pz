@@ -103,7 +103,7 @@ function Chat() {
           <TextField
                     className='message-text'
                     id="standard-multiline-static"
-                    label="Room name"
+                    label="Message"
                     multiline
                     required
                     rows={5}
