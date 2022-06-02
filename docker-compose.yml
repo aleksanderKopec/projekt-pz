@@ -22,7 +22,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 8000:8000
+      - 80:8000
     depends_on:
       - db
       - webapp
