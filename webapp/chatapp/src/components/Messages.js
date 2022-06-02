@@ -28,6 +28,7 @@ function Messages(props) {
             showTimestamp={showTimestamp}
         ></Message>)    
     });
+    messageItems.reverse()
     return (
         <div className="messages" onScroll={handleScroll}>
             {messageItems}
