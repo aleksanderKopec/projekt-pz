@@ -16,12 +16,6 @@ function Chat() {
   // const socketUrl = `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
   const socketUrl = `ws://chatapp.westeurope.cloudapp.azure.com:${WS_PORT}/ws/${roomName}?username=${author}`
 
-  const onMessageHandler = () => {
-    console.log("Previous messages: ", messages)
-    const msgDiv = document.getElementById('messages')
-    msgDiv.scrollTop = msgDiv.scrollHeight
-  }
-
   const {
     sendMessage,
     // sendJsonMessage,
@@ -71,7 +65,7 @@ function Chat() {
   const getPreviousMessages = () => {
     axios.get(`/${roomName}`)
     .then((response) => {
-      setMessages((prev) => response.data.messages.concat(prev))
+      setMessages((prev) => prev.concat(response.data.messages))
     })
   }
 
@@ -86,13 +80,14 @@ function Chat() {
 
   useEffect(() => {
     if (lastJsonMessage !== null) {
-      setMessages((prev) => prev.concat(lastJsonMessage));
+      setMessages((prev) => [lastJsonMessage].concat(prev));
     }
     
   }, [lastJsonMessage, setMessages]);
 
   useEffect(()=>{
     getPreviousMessages()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   
 
