@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { Button } from '@mui/material';
+import './Login.css'
 
 export default function Login() {
     const [roomNameValue, setRoomNameValue] = React.useState('');
@@ -35,8 +36,9 @@ export default function Login() {
             autoComplete="off"
             className="login-box"
         >
-            <div>
+            <div className='width'>
                 <TextField
+                    sx={{width: "100%"}}
                     required
                     id="outlined-required"
                     label="Nick"
@@ -45,8 +47,9 @@ export default function Login() {
 
                 />
             </div>
-            <div>
+            <div className='width'>
                 <TextField
+                    sx={{width: "100%"}}
                     id="standard-multiline-static"
                     label="Room name"
                     multiline
@@ -57,7 +60,7 @@ export default function Login() {
                     onChange={handleRoomNameChange}
                 />
             </div>
-            <Button className='submit-button' variant="contained" onClick={connectToRoom}>Join room</Button>
+            <Button className='submit-button width' variant="contained" onClick={connectToRoom}>Join room</Button>
         </Box>
     );
 }
