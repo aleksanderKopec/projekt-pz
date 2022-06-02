@@ -10,7 +10,7 @@ function Chat() {
   const [messageValue, setMessageValue] = React.useState('');
   const [messages, setMessages] = React.useState([])
 
-  const WS_PORT = 8000
+  const WS_PORT = 80
   const roomName = btoa(window.location.pathname.split('/')[2])
   const author = localStorage.getItem('author')
   // const socketUrl = `ws://${window.location.hostname}:${WS_PORT}/ws/${roomName}?username=${author}`
@@ -62,8 +62,17 @@ function Chat() {
     setMessageValue(event.target.value)
   }
 
-  const getPreviousMessages = () => {
-    axios.get(`/${roomName}`)
+  const getPreviousMessages = (last_message = null) => {
+    let request_path = ''
+    if (last_message === null)
+    {
+      request_path = `/${roomName}`
+    }
+    else 
+    {
+      request_path = `/${roomName}?message_id=${last_message}}`
+    }
+    axios.get(request_path)
     .then((response) => {
       setMessages((prev) => prev.concat(response.data.messages))
     })
@@ -73,7 +82,8 @@ function Chat() {
     const top = e.target.scrollHeight - e.target.scrollTop === e.target.scrollHeight;
     if (top)
     {
-      //getPreviousMessages()
+      console.log(messages)
+      getPreviousMessages(messages[messages.length-1].message_no)
     }
   }
 
