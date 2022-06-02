@@ -85,7 +85,7 @@ class Chat : AppCompatActivity() {
             val basek4Encoded = Base64.encodeToString(code!!.toByteArray(),Base64.DEFAULT)
             Log.d("BASE64",basek4Encoded.toString())
             try{
-                client.webSocket(method = HttpMethod.Get , host = "chatapp.westeurope.cloudapp.azure.com", port = 8000, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
+                client.webSocket(method = HttpMethod.Get , host = "chatapp.westeurope.cloudapp.azure.com", port = 80, path = "/ws/${basek4Encoded.trim()}?username=${login?.trim()}"){
                     session = this
                     while (true){
                         val receiveMessage = incoming.receive() as? Frame.Text
