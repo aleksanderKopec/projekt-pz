@@ -42,6 +42,10 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             //holder.sentMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
             holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
+            if(currentMessage.message!!.contains("![")){
+                holder.sentMessage.width = 1000
+
+            }
         }
         else
         {
@@ -53,6 +57,9 @@ class MessageAdapter(val context: Context, val messageList: ArrayList<Message>, 
             //holder.receiveMessage.text = currentMessage.message
             holder.author.text = currentMessage.senderId
             holder.timestamp.text = "${currentMessage.timestamp?.hour}:${currentMessage.timestamp?.minute}"
+            if(currentMessage.message!!.contains("![")) {
+                holder.receiveMessage.width = 1000
+            }
         }
 
     }
