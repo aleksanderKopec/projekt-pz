@@ -16,7 +16,7 @@ import { themeOptions } from './ThemeOptions';
 //setup axios global config
 const axios = require('axios').default;
 const API_HOST = "chatapp.westeurope.cloudapp.azure.com"
-const API_PORT = 8000
+const API_PORT = 80
 axios.defaults.baseURL = `http://${API_HOST}:${API_PORT}/api`
 
 const theme = createTheme(themeOptions)
